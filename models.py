@@ -5,7 +5,11 @@
 # kita tulis class Python, SQLAlchemy yang urus SQL-nya.
 # ============================================================
 
-from sqlalchemy import Column, Integer, String
+from datetime import datetime
+
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+
 from database import Base
 
 # Class User merepresentasikan tabel bernama "users" di database.
@@ -37,3 +41,27 @@ class User(Base):
 
     # Nama file foto profil. Kosong kalau belum upload.
     photo = Column(String, nullable=True)
+
+    # Relasi ke tabel tasks
+    tasks = relationship("Task", back_populates="owner", cascade="all, delete-orphan")
+
+class Task(Base):
+
+    # __tablename__ menentukan nama tabel di database
+    __tablename__ = "tasks"
+
+    # Kolom utama tugas
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False, index=True)
+    description = Column(String, nullable=True)
+    status = Column(String, nullable=False, default="pending")
+    is_completed = Column(Boolean, nullable=False, default=False)
+    due_date = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    attachment_file = Column(String, nullable=True)
+    attachment_name = Column(String, nullable=True)
+
+    # Hubungkan tugas ke pengguna pemiliknya
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    owner = relationship("User", back_populates="tasks")

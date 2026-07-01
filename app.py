@@ -9,13 +9,14 @@ import os
 import uvicorn
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy import inspect, text
 
 # Import koneksi database dan model
 from database import engine
 import models
 
 # Import router dari masing-masing modul fitur
-from routers import auth, profile
+from routers import auth, profile, tugas
 
 # ── SETUP APLIKASI ─────────────────────────────────────────
 # FastAPI() membuat instance aplikasi web kita
@@ -29,6 +30,15 @@ os.makedirs("static/uploads", exist_ok=True)
 # Ini seperti menjalankan CREATE TABLE IF NOT EXISTS di SQL.
 models.Base.metadata.create_all(bind=engine)
 
+# Tambahan untuk database lama supaya kolom lampiran tersedia.
+with engine.begin() as conn:
+    columns = inspect(engine).get_columns('tasks')
+    existing = {col['name'] for col in columns}
+    if 'attachment_file' not in existing:
+        conn.execute(text("ALTER TABLE tasks ADD COLUMN attachment_file VARCHAR"))
+    if 'attachment_name' not in existing:
+        conn.execute(text("ALTER TABLE tasks ADD COLUMN attachment_name VARCHAR"))
+
 # Daftarkan folder "static" supaya FastAPI bisa serve file statis
 # (CSS, gambar upload, dll) langsung dari folder tersebut.
 # http://localhost:8000/static/uploads/foto.jpg → baca file static/uploads/foto.jpg
@@ -38,6 +48,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Semua endpoint di auth.py dan profile.py akan tersedia di app ini.
 app.include_router(auth.router)
 app.include_router(profile.router)
+app.include_router(tugas.router)
 
 
 # ── HALAMAN UTAMA ──────────────────────────────────────────
@@ -60,7 +71,7 @@ if __name__ == "__main__":
 
     # uvicorn.run() menjalankan server web
     # "app:app" → file app.py, variabel bernama app
-    # host="0.0.0.0" → bisa diakses dari jaringan lokal
+    # host="127.0.0.1  " → bisa diakses dari jaringan lokal
     # port=8000 → nomor port
     # reload=True → otomatis restart kalau kode berubah (berguna saat development)
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)

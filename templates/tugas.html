@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Tugas{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        display: block;
+        background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
+        padding: 24px;
+    }
+
+    .card {
+        max-width: none;
+        width: 100%;
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        gap: 24px;
+    }
+
+    .hero {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        color: white;
+        border-radius: 24px;
+        padding: 32px;
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 24px;
+        align-items: center;
+        box-shadow: 0 16px 40px rgba(79, 70, 229, 0.25);
+    }
+
+    .hero h1 {
+        color: white;
+        text-align: left;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .hero p { color: rgba(255,255,255,0.9); line-height: 1.6; }
+
+    .badge {
+        display: inline-block;
+        background: rgba(255,255,255,0.18);
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .brand-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: white;
+        color: #4f46e5;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    .brand-text h2 {
+        font-size: 1rem;
+        color: #111827;
+        margin-bottom: 2px;
+    }
+
+    .brand-text p {
+        color: #6b7280;
+        font-size: 0.85rem;
+    }
+
+    .profile-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: white;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        text-decoration: none;
+        color: #111827;
+        font-weight: 600;
+    }
+
+    .avatar-img, .avatar-fallback {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #e0e7ff;
+        color: #4338ca;
+        font-weight: 700;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+    }
+
+    .hero-actions .btn { width: auto; padding: 10px 16px; }
+    .hero-actions .btn-primary { background: white; color: #4f46e5; }
+    .hero-actions .btn-primary:hover { background: #f3f4f6; }
+    .hero-actions .btn-secondary { background: rgba(255,255,255,0.16); color: white; border: 1px solid rgba(255,255,255,0.25); }
+    .hero-actions .btn-secondary:hover { background: rgba(255,255,255,0.24); }
+
+    .hero-card { background: rgba(255,255,255,0.15); border-radius: 18px; padding: 18px; }
+    .hero-card .stat { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.18); }
+    .hero-card .stat:last-child { border-bottom: none; }
+
+    .section { background:white; border-radius:20px; padding:24px; box-shadow:0 8px 24px rgba(15,23,42,0.06); }
+    .section h2 { font-size:1.1rem; margin-bottom:16px; color:#111827; }
+
+    .grid { display:grid; gap:16px; }
+    .task-list { display:grid; gap:12px; }
+    .task-item { border:1px solid #e5e7eb; border-radius:14px; padding:16px; background:#f9fafb; }
+    .task-item.done { border-color:#86efac; background:#f0fdf4; }
+    .task-top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px; }
+    .task-main { display:flex; align-items:flex-start; gap:12px; flex:1; }
+    .task-title { font-weight:700; color:#111827; }
+    .task-meta { color:#6b7280; font-size:0.9rem; margin-top:6px; }
+    .switch { position:relative; display:inline-flex; width:46px; height:26px; margin-top:2px; }
+    .switch input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; inset:0; background:#d1d5db; border-radius:999px; transition:0.2s; }
+    .slider:before { content:""; position:absolute; width:20px; height:20px; left:3px; top:3px; background:white; border-radius:50%; transition:0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+    .switch input:checked + .slider { background:#4f46e5; }
+    .switch input:checked + .slider:before { transform:translateX(20px); }
+    .attachment { display:flex; align-items:center; gap:10px; margin-top:10px; padding:10px 12px; background:white; border:1px dashed #cbd5e1; border-radius:10px; }
+    .attachment-thumb { width:48px; height:48px; object-fit:cover; border-radius:10px; }
+    .pill { display:inline-block; padding:5px 10px; border-radius:999px; font-size:0.75rem; font-weight:600; background:#e0e7ff; color:#4338ca; }
+    .pill.done { background:#dcfce7; color:#15803d; }
+
+    form .form-group { margin-bottom:12px; }
+    form input, form textarea, form select { width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:10px; }
+    form textarea { min-height:90px; resize:vertical; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+
+    .alert { padding:12px 16px; border-radius:10px; margin-bottom:12px; }
+    .alert-success { background:#f0fdf4; color:#15803d; }
+    .alert-error { background:#fef2f2; color:#dc2626; }
+
+    @media (max-width: 900px) {
+        .hero { grid-template-columns:1fr; }
+        .row { grid-template-columns:1fr; }
+        .topbar { flex-direction:column; align-items:flex-start; gap:10px; }
+    }
+</style>
+
+<div class="page">
+    <div class="topbar">
+        <div class="brand">
+            <div class="brand-icon">✓</div>
+            <div class="brand-text">
+                <h2>Task Board</h2>
+                <p>Kelola tugas dengan lebih rapi</p>
+            </div>
+        </div>
+        <a href="/profile/{{ user.id }}" class="profile-pill">
+            {% if user.photo %}
+                <img src="/static/uploads/{{ user.photo }}" alt="Foto Profil" class="avatar-img">
+            {% else %}
+                <div class="avatar-fallback">{{ user.username[0]|upper }}</div>
+            {% endif %}
+            <span>Lihat Profil</span>
+        </a>
+    </div>
+
+    <section class="hero">
+        <div>
+            <span class="badge"> Dashboard Tugas</span>
+            <h1>Kelola tugasmu dari satu tempat</h1>
+            <p>Tambahkan, edit, dan hapus tugas dengan cepat. Semua pekerjaan Anda akan lebih terarah dan mudah dipantau.</p>
+            <div class="hero-actions">
+                <a href="#form-tugas" class="btn btn-primary">Tambah Tugas</a>
+            </div>
+        </div>
+
+        <div class="hero-card">
+            <div class="stat"><span>Total tugas</span><strong>{{ tasks|length }}</strong></div>
+            <div class="stat"><span>Selesai</span><strong>{{ tasks|selectattr('is_completed')|list|length }}</strong></div>
+            <div class="stat"><span>Belum selesai</span><strong>{{ tasks|rejectattr('is_completed')|list|length }}</strong></div>
+        </div>
+    </section>
+
+    {% if request.query_params.get('created') %}
+    <div class="alert alert-success">Tugas berhasil ditambahkan.</div>
+    {% endif %}
+    {% if request.query_params.get('updated') %}
+    <div class="alert alert-success">Tugas berhasil diperbarui.</div>
+    {% endif %}
+    {% if request.query_params.get('deleted') %}
+    <div class="alert alert-success">Tugas berhasil dihapus.</div>
+    {% endif %}
+
+    <section class="section">
+        <h2>Buat atau edit tugas</h2>
+        <form id="form-tugas" method="post" action="/tasks/{{ user.id }}/{{ 'edit/' ~ edit_task.id if edit_task else 'create' }}" enctype="multipart/form-data">
+            <div class="row">
+                <div class="form-group">
+                    <label>Judul tugas</label>
+                    <input type="text" name="title" value="{{ edit_task.title if edit_task else '' }}" placeholder="Contoh: Belajar FastAPI" required>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="pending" {% if edit_task and edit_task.status == 'pending' %}selected{% endif %}>Belum Selesai</option>
+                        <option value="in_progress" {% if edit_task and edit_task.status == 'in_progress' %}selected{% endif %}>Sedang Dikerjakan</option>
+                        <option value="completed" {% if edit_task and edit_task.status == 'completed' %}selected{% endif %}>Selesai</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Deskripsi</label>
+                <textarea name="description" placeholder="Tambahkan detail tugas...">{{ edit_task.description if edit_task else '' }}</textarea>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Tanggal deadline</label>
+                    <input type="date" name="due_date" value="{{ edit_task.due_date.strftime('%Y-%m-%d') if edit_task and edit_task.due_date else '' }}">
+                </div>
+                <div class="form-group">
+                    <label>Upload foto atau file</label>
+                    <input type="file" name="file" accept="image/*,.pdf,.doc,.docx,.ppt,.pptx,.txt,.zip">
+                </div>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center;">
+                <label class="switch" style="width: 46px; height: 26px;">
+                    <input type="checkbox"
+                        name="is_completed"
+                        {% if edit_task and edit_task.is_completed %}checked{% endif %}>
+                    <span class="slider"></span>
+                </label>
+
+                <span style="margin-left:10px; color:#4b5563;">
+                    Tandai selesai
+                </span>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-primary" style="width:auto; padding:10px 16px;">{{ 'Simpan Perubahan' if edit_task else 'Tambah Tugas' }}</button>
+                {% if edit_task %}
+                <a href="/tasks/{{ user.id }}" class="btn btn-secondary" style="width:auto; padding:10px 16px; text-decoration:none; display:inline-block;">Batal</a>
+                {% endif %}
+            </div>
+        </form>
+    </section>
+
+    <section class="section">
+        <h2>Daftar tugas</h2>
+        <div class="task-list">
+            {% if tasks %}
+                {% for task in tasks %}
+                <div class="task-item {% if task.is_completed %}done{% endif %}">
+                    <div class="task-top">
+                        <div class="task-main">
+                            <form method="post" action="/tasks/{{ user.id }}/toggle/{{ task.id }}" style="display:inline-flex;">
+                                <label class="switch">
+                                    <input type="checkbox" name="is_completed" {% if task.is_completed %}checked{% endif %} onchange="this.form.submit()">
+                                    <span class="slider"></span>
+                                </label>
+                            </form>
+                            <div>
+                                <div class="task-title">{{ task.title }}</div>
+                                <div class="task-meta">{{ task.description or 'Tidak ada deskripsi' }}</div>
+                            </div>
+                        </div>
+                        <span class="pill {% if task.is_completed %}done{% endif %}">{{ 'Selesai' if task.is_completed else 'Belum selesai' }}</span>
+                    </div>
+                    <div class="task-meta">Status: {{ task.status }} | Deadline: {{ task.due_date.strftime('%d-%m-%Y') if task.due_date else '-' }}</div>
+                    {% if task.attachment_file %}
+                    <div class="attachment">
+                        {% if task.attachment_name and task.attachment_name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                            <img src="/static/uploads/{{ task.attachment_file }}" alt="{{ task.attachment_name }}" class="attachment-thumb">
+                        {% endif %}
+                        <a href="/static/uploads/{{ task.attachment_file }}" target="_blank">{{ task.attachment_name or 'Lampiran' }}</a>
+                    </div>
+                    {% endif %}
+                    <div class="actions">
+                        <a href="/tasks/{{ user.id }}/edit/{{ task.id }}" class="btn btn-secondary" style="width:auto; padding:8px 12px; text-decoration:none; display:inline-block;">Edit</a>
+                        <form method="post" action="/tasks/{{ user.id }}/delete/{{ task.id }}" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" style="width:auto; padding:8px 12px; margin-top:0;">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color:#6b7280;">Belum ada tugas. Tambahkan tugas pertama Anda.</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
