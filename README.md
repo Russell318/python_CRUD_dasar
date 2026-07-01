@@ -1,10 +1,10 @@
 # 🚀 ALFHA TASK - Pengelola Tugas & Produktivitas
 ```
-INI Merupakan aplikasi manajemen tugas
+ALFHA TASK adalah aplikasi dashboard berbasis web komprehensif yang dirancang untuk membantu pengguna mengelola, melacak, dan mengorganisir tugas-tugas secara efisien. Dilengkapi dengan sistem autentikasi dan manajemen akun personal, setiap pengguna dapat memiliki ruang kerja pribadi yang aman dan terpusat.
 
 ```
 
-ALFHA TASK adalah aplikasi dashboard berbasis web komprehensif yang dirancang untuk membantu pengguna mengelola, melacak, dan mengorganisir tugas-tugas secara efisien. Dilengkapi dengan sistem autentikasi dan manajemen akun personal, setiap pengguna dapat memiliki ruang kerja pribadi yang aman dan terpusat.
+
 
 🚀 Fitur Utama
 Aplikasi ini kini dilengkapi dengan fitur-fitur mulai dari manajemen akun hingga operasional tugas harian (CRUD):
@@ -35,21 +35,4 @@ Penghapusan Tugas (Delete): Hapus tugas yang sudah tidak relevan dengan cepat.
 
 Panel Statistik: Pantau produktivitas melalui ringkasan real-time yang menampilkan Total Tugas, Tugas Selesai, dan Tugas Belum Selesai.
 
-💻 Panduan Penggunaan Singkat
-Memulai (Autentikasi):
 
-Jika belum memiliki akun, klik Daftar di sini pada halaman Login dan buat akun baru.
-
-Gunakan Username dan Password untuk Masuk (Login) ke dashboard.
-
-Mengelola Profil:
-
-Navigasi ke halaman Profil Saya (melalui ikon profil di pojok kanan atas).
-
-Unggah foto atau perbarui nama/email, lalu klik Simpan Perubahan.
-
-Mengelola Tugas:
-
-Gunakan form Buat atau edit tugas di halaman utama untuk menambah pekerjaan baru.
-
-Kelola tugas yang ada di panel Daftar tugas (Edit, Hapus, atau klik toggle untuk menandai selesai).
