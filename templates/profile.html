@@ -93,14 +93,19 @@
 
     <hr class="divider">
 
-    {# ── LOGOUT & HAPUS AKUN ── #}
-    <a href="/logout">
-        <button type="button" class="btn btn-secondary">Logout</button>
-    </a>
-
-    <form action="/profile/{{ user.id }}/delete" method="post"
-          onsubmit="return confirm('Yakin ingin hapus akun? Tindakan ini tidak bisa dibatalkan!')">
-        <button type="submit" class="btn btn-danger">Hapus Akun</button>
-    </form>
+    {# ── NAVIGASI & AKSI ── #}
+    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px;">
+        <a href="/tasks/{{ user.id }}" style="text-decoration:none;">
+            <button type="button" class="btn btn-primary">← Kembali ke Dashboard</button>
+        </a>
+        <a href="/logout" style="text-decoration:none;">
+            <button type="button" class="btn btn-secondary">Logout</button>
+        </a>
+        <form action="/profile/{{ user.id }}/delete" method="post"
+              onsubmit="return confirm('Yakin ingin hapus akun? Tindakan ini tidak bisa dibatalkan!')"
+              style="display:contents;">
+            <button type="submit" class="btn btn-danger">Hapus Akun</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

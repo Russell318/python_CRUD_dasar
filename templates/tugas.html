@@ -3,7 +3,8 @@
 {% block title %}Dashboard Tugas{% endblock %}
 
 {% block content %}
-<style>
+
+<style> 
     body {
         display: block;
         background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
@@ -73,12 +74,19 @@
         width: 42px;
         height: 42px;
         border-radius: 12px;
-        background: white;
-        color: #4f46e5;
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        color: white;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
+        font-size: 1.3rem;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .brand-icon:hover {
+        transform: scale(1.1) rotate(5deg);
     }
 
     .brand-text h2 {
@@ -174,13 +182,14 @@
     }
 </style>
 
+
 <div class="page">
     <div class="topbar">
         <div class="brand">
-            <div class="brand-icon">✓</div>
+            <div class="brand-icon">📋</div>
             <div class="brand-text">
-                <h2>Task Board</h2>
-                <p>Kelola tugas dengan lebih rapi</p>
+                <h2>ALFHA TASK</h2>
+                <p>Pengelola Tugas</p>
             </div>
         </div>
         <a href="/profile/{{ user.id }}" class="profile-pill">
@@ -189,7 +198,7 @@
             {% else %}
                 <div class="avatar-fallback">{{ user.username[0]|upper }}</div>
             {% endif %}
-            <span>Lihat Profil</span>
+            <span>{{ user.username }}</span>
         </a>
     </div>
 
