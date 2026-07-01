@@ -1,4 +1,4 @@
-# latihan_pythondasar
+# Python CRUD manajemen task
 ```
-ini Modifikasi alfian
+INI Merupakan aplikasi manajemen tugas
 ```
